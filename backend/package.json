@@ -1,7 +1,6 @@
 {
-  "name": "gov-login-backend",
+  "name": "nuitbanker-admin",
   "version": "1.0.0",
-  "description": "Backend para autenticação GOV.BR",
   "main": "server.js",
   "scripts": {
     "start": "node server.js"
