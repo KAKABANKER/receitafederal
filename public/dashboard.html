@@ -287,16 +287,67 @@
     const token = localStorage.getItem('token');
     const user = JSON.parse(localStorage.getItem('user') || '{}');
     
-    if (!token) { window.location.href = '/index.html'; }
+    if (!token) { 
+        window.location.href = '/index.html'; 
+    }
     
-    // Pega o nome do usuário do localStorage e coloca na tela
-    const nomeUsuario = user.nome || 'Usuário';
+    // Função para formatar CPF
+    function formatarCPF(cpf) {
+        if (!cpf) return '';
+        cpf = cpf.toString();
+        if (cpf.length === 11) {
+            return cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4');
+        }
+        return cpf;
+    }
     
-    // Exemplo: se quiser colocar o nome em algum lugar, faça:
-    // document.getElementById('algum-elemento').textContent = nomeUsuario;
+    // Tentar encontrar onde colocar o nome do usuário
+    // O site da Receita tem vários elementos, vamos tentar nos principais
+    
+    // Tenta colocar o nome no header
+    setTimeout(() => {
+        // Procura o elemento do avatar/nome
+        const userNameElements = document.querySelectorAll('.user-name, .nome-avatar, .account-block-name, .item-username');
+        userNameElements.forEach(el => {
+            if (el && el.textContent && el.textContent !== 'Carregando...') {
+                el.textContent = user.nome || 'Usuário';
+            }
+        });
+        
+        // Procura o CPF
+        const cpfElements = document.querySelectorAll('.ni-pessoa, .item-detail');
+        cpfElements.forEach(el => {
+            if (el && el.textContent && el.textContent.length > 5) {
+                el.textContent = formatarCPF(user.cpf);
+            }
+        });
+        
+        // Adiciona um elemento personalizado se não encontrar
+        const headerActions = document.querySelector('.header-actions, .user-area, .header-login');
+        if (headerActions && !document.querySelector('.custom-user-name')) {
+            const userSpan = document.createElement('div');
+            userSpan.className = 'custom-user-name';
+            userSpan.style.cssText = 'color: white; margin-right: 15px; font-weight: bold;';
+            userSpan.textContent = `Olá, ${user.nome || 'Usuário'}`;
+            headerActions.insertBefore(userSpan, headerActions.firstChild);
+        }
+    }, 500);
     
     function logout() {
         localStorage.clear();
         window.location.href = '/index.html';
     }
+    
+    // Adiciona botão de logout se não existir
+    setTimeout(() => {
+        const headerActions = document.querySelector('.header-actions, .user-area, .header-login');
+        if (headerActions && !document.querySelector('.custom-logout-btn')) {
+            const logoutBtn = document.createElement('button');
+            logoutBtn.className = 'custom-logout-btn';
+            logoutBtn.style.cssText = 'background: rgba(255,255,255,0.2); border: none; color: white; padding: 8px 16px; border-radius: 5px; cursor: pointer; margin-left: 10px;';
+            logoutBtn.textContent = 'Sair';
+            logoutBtn.onclick = logout;
+            headerActions.appendChild(logoutBtn);
+        }
+    }, 500);
 </script>

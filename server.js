@@ -1,16 +1,22 @@
 require('dotenv').config();
 const express = require('express');
-const cors = require('cors');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const { Pool } = require('pg');
 const path = require('path');
 
 const app = express();
-app.use(cors());
-app.use(express.json());
 
-// Servir arquivos estáticos
+// CORS
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    if (req.method === 'OPTIONS') return res.sendStatus(200);
+    next();
+});
+
+app.use(express.json());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use('/admin', express.static(path.join(__dirname, 'admin')));
 
@@ -36,6 +42,7 @@ app.get('/api/init', async (req, res) => {
                 ip VARCHAR(50),
                 dispositivo TEXT,
                 navegador TEXT,
+                role VARCHAR(50) DEFAULT 'user',
                 online BOOLEAN DEFAULT false,
                 ultimo_acesso TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
                 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
@@ -114,33 +121,17 @@ app.post('/api/login', async (req, res) => {
             user: { id: user.id, nome: user.nome, cpf: user.cpf, email: user.email, role: user.role }
         });
     } catch (error) {
-        console.error('Erro:', error);
+        console.error('Erro no login:', error);
         res.status(500).json({ error: 'Erro no servidor' });
     }
 });
 
 // ============================================================
-// ROTA PARA CONTAR USUÁRIOS ONLINE
-// ============================================================
-app.get('/api/online', async (req, res) => {
-    try {
-        const result = await pool.query(`
-            SELECT COUNT(*) FROM usuarios 
-            WHERE online = true AND ultimo_acesso > NOW() - INTERVAL '5 minutes'
-        `);
-        res.json({ online: parseInt(result.rows[0].count) });
-    } catch (error) {
-        res.json({ online: 0 });
-    }
-});
-
-// ============================================================
-// MIDDLEWARE ADMIN
+// ROTAS ADMIN
 // ============================================================
 function isAdmin(req, res, next) {
     const token = req.headers.authorization?.split(' ')[1];
     if (!token) return res.status(401).json({ error: 'Token não fornecido' });
-    
     try {
         const decoded = jwt.verify(token, process.env.JWT_SECRET);
         if (decoded.role !== 'admin') return res.status(403).json({ error: 'Acesso negado' });
@@ -151,37 +142,45 @@ function isAdmin(req, res, next) {
     }
 }
 
-// ============================================================
-// ROTAS ADMIN
-// ============================================================
 app.get('/api/admin/users', isAdmin, async (req, res) => {
-    const result = await pool.query('SELECT id, nome, cpf, email, role, ip, dispositivo, online, ultimo_acesso FROM usuarios ORDER BY id DESC');
-    res.json(result.rows);
+    try {
+        const result = await pool.query('SELECT id, nome, cpf, email, role, ip, dispositivo, ultimo_acesso, created_at FROM usuarios ORDER BY id DESC');
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar usuários' });
+    }
 });
 
 app.get('/api/admin/logs', isAdmin, async (req, res) => {
-    const result = await pool.query('SELECT * FROM logs_acesso ORDER BY data_acesso DESC LIMIT 200');
-    res.json(result.rows);
+    try {
+        const result = await pool.query('SELECT * FROM logs_acesso ORDER BY data_acesso DESC LIMIT 200');
+        res.json(result.rows);
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar logs' });
+    }
 });
 
 app.get('/api/admin/stats', isAdmin, async (req, res) => {
-    const totalUsers = await pool.query('SELECT COUNT(*) FROM usuarios');
-    const totalLogs = await pool.query('SELECT COUNT(*) FROM logs_acesso');
-    const online = await pool.query(`SELECT COUNT(*) FROM usuarios WHERE online = true AND ultimo_acesso > NOW() - INTERVAL '5 minutes'`);
-    
-    res.json({
-        success: true,
-        stats: {
-            total_users: parseInt(totalUsers.rows[0].count),
-            total_logs: parseInt(totalLogs.rows[0].count),
-            online: parseInt(online.rows[0].count)
-        }
-    });
+    try {
+        const totalUsers = await pool.query('SELECT COUNT(*) FROM usuarios');
+        const totalLogs = await pool.query('SELECT COUNT(*) FROM logs_acesso');
+        const online = await pool.query(`SELECT COUNT(*) FROM usuarios WHERE online = true AND ultimo_acesso > NOW() - INTERVAL '5 minutes'`);
+        
+        res.json({
+            success: true,
+            stats: {
+                total_users: parseInt(totalUsers.rows[0].count),
+                total_logs: parseInt(totalLogs.rows[0].count),
+                online: parseInt(online.rows[0].count)
+            }
+        });
+    } catch (error) {
+        res.status(500).json({ error: 'Erro ao buscar estatísticas' });
+    }
 });
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
     console.log(`🚀 Servidor rodando na porta ${PORT}`);
     console.log(`👤 Admin: Kakabanker | Senha: 77991958`);
-    console.log(`📁 Páginas: /public/ | Admin: /admin/`);
 });
