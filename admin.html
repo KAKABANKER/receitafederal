@@ -1,0 +1,261 @@
+<!-- admin.html - Painel Administrativo -->
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Painel Administrativo - Receita Federal</title>
+    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fontawesome/css/all.min.css">
+    <link rel="stylesheet" href="https://sso.acesso.gov.br/assets/govbr/fonts/rawline/rawline.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Rawline', sans-serif; background: #f0f2f5; }
+        
+        .admin-container { display: flex; min-height: 100vh; }
+        
+        /* Sidebar */
+        .admin-sidebar { width: 280px; background: #1351B4; color: #fff; display: flex; flex-direction: column; position: fixed; height: 100vh; overflow-y: auto; }
+        .sidebar-header { padding: 1.5rem; border-bottom: 1px solid rgba(255,255,255,0.2); }
+        .sidebar-header img { height: 40px; margin-bottom: 1rem; }
+        .sidebar-header h2 { font-size: 1.2rem; font-weight: 500; }
+        .sidebar-nav { flex: 1; padding: 1rem 0; }
+        .nav-item { padding: 0.75rem 1.5rem; display: flex; align-items: center; gap: 0.75rem; cursor: pointer; transition: background 0.2s; }
+        .nav-item:hover, .nav-item.active { background: rgba(255,255,255,0.15); }
+        .nav-item i { width: 24px; }
+        .sidebar-footer { padding: 1rem 1.5rem; border-top: 1px solid rgba(255,255,255,0.2); }
+        .logout-btn { background: rgba(255,255,255,0.1); border: none; color: #fff; padding: 0.6rem; border-radius: 8px; cursor: pointer; width: 100%; display: flex; align-items: center; justify-content: center; gap: 0.5rem; }
+        .logout-btn:hover { background: rgba(255,255,255,0.2); }
+        
+        /* Main Content */
+        .admin-main { flex: 1; margin-left: 280px; }
+        .admin-header { background: #fff; padding: 1rem 2rem; box-shadow: 0 1px 4px rgba(0,0,0,0.1); display: flex; justify-content: space-between; align-items: center; }
+        .admin-header h1 { font-size: 1.3rem; color: #1351B4; }
+        .admin-content { padding: 2rem; }
+        
+        /* Stats Cards */
+        .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; margin-bottom: 2rem; }
+        .stat-card { background: #fff; border-radius: 12px; padding: 1.25rem; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+        .stat-card h3 { font-size: 0.85rem; color: #666; margin-bottom: 0.5rem; }
+        .stat-card .value { font-size: 2rem; font-weight: 700; color: #1351B4; }
+        
+        /* Tables */
+        .card { background: #fff; border-radius: 12px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); margin-bottom: 1.5rem; overflow: hidden; }
+        .card-header { padding: 1rem 1.25rem; border-bottom: 1px solid #e0e0e0; background: #fafafa; display: flex; justify-content: space-between; align-items: center; }
+        .card-header h3 { font-size: 1rem; font-weight: 600; }
+        table { width: 100%; border-collapse: collapse; }
+        th, td { padding: 0.75rem 1rem; text-align: left; border-bottom: 1px solid #eee; }
+        th { background: #f8f9fa; font-weight: 600; color: #555; }
+        .badge { padding: 0.25rem 0.5rem; border-radius: 20px; font-size: 0.7rem; font-weight: 500; }
+        .badge-success { background: #d4edda; color: #155724; }
+        .badge-danger { background: #f8d7da; color: #721c24; }
+        .badge-warning { background: #fff3cd; color: #856404; }
+        
+        /* Filters */
+        .filters { display: flex; gap: 1rem; margin-bottom: 1rem; flex-wrap: wrap; }
+        .filters input, .filters select { padding: 0.5rem; border: 1px solid #ddd; border-radius: 6px; }
+        .btn-primary { background: #1351B4; color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer; }
+        
+        @media (max-width: 768px) { .admin-sidebar { width: 70px; } .admin-sidebar span:not(.sr-only) { display: none; } .admin-main { margin-left: 70px; } .stats-grid { grid-template-columns: repeat(2, 1fr); } }
+    </style>
+</head>
+<body>
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <div class="sidebar-header">
+                <img src="https://sso.acesso.gov.br/assets/govbr/img/govbr.png" alt="gov.br">
+                <h2>Painel Administrativo</h2>
+            </div>
+            <nav class="sidebar-nav">
+                <div class="nav-item active" data-tab="dashboard"><i class="fas fa-tachometer-alt"></i> <span>Dashboard</span></div>
+                <div class="nav-item" data-tab="acessos"><i class="fas fa-history"></i> <span>Histórico de Acessos</span></div>
+                <div class="nav-item" data-tab="usuarios"><i class="fas fa-users"></i> <span>Usuários</span></div>
+                <div class="nav-item" data-tab="logs"><i class="fas fa-file-alt"></i> <span>Logs de Ações</span></div>
+            </nav>
+            <div class="sidebar-footer">
+                <button id="admin-logout" class="logout-btn"><i class="fas fa-sign-out-alt"></i> <span>Sair</span></button>
+            </div>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1 id="admin-title">Dashboard</h1>
+                <div><i class="fas fa-user-shield"></i> <span id="admin-name">Administrador</span></div>
+            </div>
+            <div class="admin-content">
+                <!-- Tab Dashboard -->
+                <div id="tab-dashboard" class="tab-content">
+                    <div class="stats-grid">
+                        <div class="stat-card"><h3>Total de Acessos</h3><div class="value" id="total-acessos">0</div></div>
+                        <div class="stat-card"><h3>Usuários Ativos</h3><div class="value" id="usuarios-ativos">0</div></div>
+                        <div class="stat-card"><h3>Pendências Encontradas</h3><div class="value" id="pendencias-total">0</div></div>
+                        <div class="stat-card"><h3>Certidões Emitidas</h3><div class="value" id="certidoes-total">0</div></div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header"><h3>Últimos Acessos</h3><button id="btn-ver-todos" class="btn-primary" style="background:transparent; color:#1351B4;">Ver todos</button></div>
+                        <div style="overflow-x:auto"><table id="tabela-acessos"><thead><tr><th>Data/Hora</th><th>Usuário</th><th>CPF</th><th>IP</th><th>Dispositivo</th></tr></thead><tbody><tr><td colspan="5">Carregando...</td></tr></tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- Tab Histórico de Acessos -->
+                <div id="tab-acessos" class="tab-content" style="display:none">
+                    <div class="card">
+                        <div class="card-header"><h3>Histórico Completo de Acessos</h3></div>
+                        <div class="filters"><input type="text" id="filtro-cpf" placeholder="Filtrar por CPF"><input type="date" id="filtro-data"><button id="btn-filtrar" class="btn-primary">Filtrar</button><button id="btn-limpar" class="btn-primary" style="background:#6c757d;">Limpar</button><button id="btn-exportar-csv" class="btn-primary" style="background:#28a745;">Exportar CSV</button></div>
+                        <div style="overflow-x:auto"><table id="tabela-acessos-full" width="100%"><thead><tr><th>Data/Hora</th><th>Usuário</th><th>CPF</th><th>IP</th><th>Dispositivo</th><th>Navegador</th></tr></thead><tbody><tr><td colspan="6">Carregando...</td></tr></tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- Tab Usuários -->
+                <div id="tab-usuarios" class="tab-content" style="display:none">
+                    <div class="card">
+                        <div class="card-header"><h3>Gerenciar Usuários</h3><button id="btn-novo-usuario" class="btn-primary">+ Novo Usuário</button></div>
+                        <div style="overflow-x:auto"><table id="tabela-usuarios" width="100%"><thead><tr><th>ID</th><th>Nome</th><th>CPF</th><th>Role</th><th>Último Acesso</th><th>Ações</th></tr></thead><tbody><tr><td colspan="6">Carregando...</td></tr></tbody></table></div>
+                    </div>
+                </div>
+
+                <!-- Tab Logs -->
+                <div id="tab-logs" class="tab-content" style="display:none">
+                    <div class="card">
+                        <div class="card-header"><h3>Logs de Ações dos Usuários</h3><button id="btn-exportar-logs" class="btn-primary" style="background:#28a745;">Exportar Logs</button></div>
+                        <div style="overflow-x:auto"><table id="tabela-logs" width="100%"><thead><tr><th>Data/Hora</th><th>Usuário</th><th>Ação</th><th>Detalhes</th><th>IP</th></tr></thead><tbody><tr><td colspan="5">Carregando...</td></tr></tbody></table></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        const API_URL = window.location.origin.includes('localhost') ? 'http://localhost:3001/api' : 'https://receitafederal-f2fk.onrender.com/api';
+        const token = localStorage.getItem('token');
+        let user = null;
+        
+        try { user = JSON.parse(localStorage.getItem('user') || '{}'); } catch(e) { user = {}; }
+        
+        if (!token || user.role !== 'admin') window.location.href = '/index.html';
+        
+        document.getElementById('admin-name').textContent = user.nome || 'Administrador';
+        
+        // Tabs
+        document.querySelectorAll('.nav-item').forEach(item => {
+            item.addEventListener('click', function() {
+                document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                this.classList.add('active');
+                const tab = this.dataset.tab;
+                document.querySelectorAll('.tab-content').forEach(content => content.style.display = 'none');
+                document.getElementById(`tab-${tab}`).style.display = 'block';
+                document.getElementById('admin-title').textContent = this.querySelector('span').textContent;
+                if (tab === 'acessos') carregarAcessosCompletos();
+                if (tab === 'usuarios') carregarUsuarios();
+                if (tab === 'logs') carregarLogs();
+            });
+        });
+        
+        async function carregarDashboard() {
+            try {
+                const response = await fetch(`${API_URL}/admin/dashboard`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById('total-acessos').textContent = data.totalAcessos || 0;
+                    document.getElementById('usuarios-ativos').textContent = data.usuariosAtivos || 0;
+                    document.getElementById('pendencias-total').textContent = data.totalPendencias || 0;
+                    document.getElementById('certidoes-total').textContent = data.totalCertidoes || 0;
+                    
+                    const tbody = document.querySelector('#tabela-acessos tbody');
+                    if (data.ultimosAcessos && data.ultimosAcessos.length > 0) {
+                        tbody.innerHTML = data.ultimosAcessos.map(a => `<tr><td>${new Date(a.data).toLocaleString('pt-BR')}</td><td>${a.nome || '-'}</td><td>${a.cpf || '-'}</td><td>${a.ip || '-'}</td><td>${a.dispositivo || '-'}</td></tr>`).join('');
+                    } else {
+                        tbody.innerHTML = '<tr><td colspan="5">Nenhum acesso registrado</td></tr>';
+                    }
+                }
+            } catch(e) { console.error(e); }
+        }
+        
+        async function carregarAcessosCompletos(filtroCPF = '', filtroData = '') {
+            try {
+                let url = `${API_URL}/admin/acessos?`;
+                if (filtroCPF) url += `cpf=${filtroCPF}&`;
+                if (filtroData) url += `data=${filtroData}&`;
+                const response = await fetch(url, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await response.json();
+                const tbody = document.querySelector('#tabela-acessos-full tbody');
+                if (data.success && data.acessos && data.acessos.length > 0) {
+                    tbody.innerHTML = data.acessos.map(a => `<tr><td>${new Date(a.data).toLocaleString('pt-BR')}</td><td>${a.nome || '-'}</td><td>${a.cpf || '-'}</td><td>${a.ip || '-'}</td><td>${a.dispositivo || '-'}</td><td>${a.navegador || '-'}</td></tr>`).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6">Nenhum acesso encontrado</td></tr>';
+                }
+            } catch(e) { console.error(e); }
+        }
+        
+        async function carregarUsuarios() {
+            try {
+                const response = await fetch(`${API_URL}/admin/usuarios`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await response.json();
+                const tbody = document.querySelector('#tabela-usuarios tbody');
+                if (data.success && data.usuarios && data.usuarios.length > 0) {
+                    tbody.innerHTML = data.usuarios.map(u => `<tr><td>${u.id}</td><td>${u.nome}</td><td>${u.cpf}</td><td><span class="badge ${u.role === 'admin' ? 'badge-warning' : 'badge-success'}">${u.role}</span></td><td>${u.ultimoAcesso ? new Date(u.ultimoAcesso).toLocaleString('pt-BR') : '-'}</td><td><button class="btn-primary" style="background:#6c757d; padding:4px 8px;" onclick="resetarSenha(${u.id})">Resetar Senha</button></td></tr>`).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="6">Nenhum usuário encontrado</td></tr>';
+                }
+            } catch(e) { console.error(e); }
+        }
+        
+        async function carregarLogs() {
+            try {
+                const response = await fetch(`${API_URL}/admin/logs`, { headers: { 'Authorization': `Bearer ${token}` } });
+                const data = await response.json();
+                const tbody = document.querySelector('#tabela-logs tbody');
+                if (data.success && data.logs && data.logs.length > 0) {
+                    tbody.innerHTML = data.logs.map(l => `<tr><td>${new Date(l.data).toLocaleString('pt-BR')}</td><td>${l.usuario}</td><td>${l.acao}</td><td>${l.detalhes || '-'}</td><td>${l.ip || '-'}</td></tr>`).join('');
+                } else {
+                    tbody.innerHTML = '<tr><td colspan="5">Nenhum log encontrado</td></tr>';
+                }
+            } catch(e) { console.error(e); }
+        }
+        
+        window.resetarSenha = async function(userId) {
+            if (confirm('Resetar a senha deste usuário? A nova senha será enviada por e-mail.')) {
+                try {
+                    const response = await fetch(`${API_URL}/admin/resetar-senha`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                        body: JSON.stringify({ userId })
+                    });
+                    const data = await response.json();
+                    alert(data.message || 'Senha resetada com sucesso');
+                } catch(e) { alert('Erro ao resetar senha'); }
+            }
+        };
+        
+        document.getElementById('btn-filtrar')?.addEventListener('click', () => {
+            const cpf = document.getElementById('filtro-cpf').value;
+            const data = document.getElementById('filtro-data').value;
+            carregarAcessosCompletos(cpf, data);
+        });
+        document.getElementById('btn-limpar')?.addEventListener('click', () => {
+            document.getElementById('filtro-cpf').value = '';
+            document.getElementById('filtro-data').value = '';
+            carregarAcessosCompletos();
+        });
+        document.getElementById('btn-exportar-csv')?.addEventListener('click', async () => {
+            window.open(`${API_URL}/admin/exportar-acessos?token=${token}`, '_blank');
+        });
+        document.getElementById('btn-exportar-logs')?.addEventListener('click', async () => {
+            window.open(`${API_URL}/admin/exportar-logs?token=${token}`, '_blank');
+        });
+        document.getElementById('btn-novo-usuario')?.addEventListener('click', () => {
+            alert('Funcionalidade em desenvolvimento.\nPara criar novo usuário, utilize o backend.');
+        });
+        document.getElementById('btn-ver-todos')?.addEventListener('click', () => {
+            document.querySelector('.nav-item[data-tab="acessos"]').click();
+        });
+        document.getElementById('admin-logout')?.addEventListener('click', () => {
+            localStorage.clear();
+            window.location.href = '/index.html';
+        });
+        
+        carregarDashboard();
+        
+        setInterval(() => { if (document.getElementById('tab-dashboard').style.display !== 'none') carregarDashboard(); }, 30000);
+    </script>
+</body>
+</html>
